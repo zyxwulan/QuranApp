@@ -3,6 +3,7 @@ import React from 'react';
 import {TextBold, TextSemiBold, Gap, TextRegular} from '../../components';
 import {colors} from '../../utils';
 import {Book, Book2, Head, SearchPrimary} from '../../assets';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RenderCard = ({text, img, onPress, bg}) => {
   return bg === 'white' ? (
@@ -22,13 +23,26 @@ const RenderCard = ({text, img, onPress, bg}) => {
       <View style={styles.primaryCard}>
         <Image source={img} style={{width: 42, height: 34}} />
         <Gap height={75} />
-        <TextRegular type="Subtitle" text={text} color={colors['white']} />
+        <TextRegular type="Subtitle" text={text} color={colors.white} />
       </View>
     </TouchableOpacity>
   );
 };
 
 const Home = ({navigation}) => {
+  const handleLogOut = () => {
+    AsyncStorage.removeItem('user');
+    navigation.replace('Login');
+  };
+
+  // const getUser = async ( ) => {
+  //   const data = await AsyncStorage.getItem('user');
+  // };
+
+  // useEffect(() => {
+  //   getUser()
+  // }, []);
+
   return (
     <View style={styles.body}>
       <Gap height={48} />
@@ -39,23 +53,30 @@ const Home = ({navigation}) => {
         style={styles.title}
       />
       <Gap height={28} />
+      <TouchableOpacity activeOpacity={0.7} onPress={handleLogOut}>
+        <View style={styles.button}>
+          <TextRegular
+            type="Body 1"
+            text="Logout"
+            style={{color: 'white', alignSelf: 'center'}}
+          />
+        </View>
+      </TouchableOpacity>
+
+      <Gap height={12} />
 
       <View style={styles.quote}>
         <View style={styles.quoteCard}>
           <View style={styles.quoteTitle}>
             <Image source={Book} style={{width: 20, height: 20}} />
             <Gap width={8} />
-            <TextSemiBold
-              type="Body 2"
-              text="Motivasi"
-              color={colors['white']}
-            />
+            <TextSemiBold type="Body 2" text="Motivasi" color={colors.white} />
           </View>
           <Gap height={10} />
           <TextRegular
             text="Sebaik - baik manusia diantara kamu adalah yang mempelajari Al-Quran dan mengajarkannya (HR Bukhori)"
             type="Caption"
-            color={colors['white']}
+            color={colors.white}
           />
         </View>
       </View>
@@ -74,6 +95,8 @@ const Home = ({navigation}) => {
         <Gap width={22} />
         <RenderCard text="Dashbord" img={Book2} />
       </View>
+
+      <Gap height={10} />
     </View>
   );
 };
@@ -101,6 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingBottom: 155,
+    alignSelf: 'center',
   },
   primaryCard: {
     backgroundColor: '#DA8856',
@@ -117,5 +141,12 @@ const styles = StyleSheet.create({
     marginBottom: 22,
     borderWidth: 1,
     borderColor: '#DA8856',
+  },
+  button: {
+    paddingVertical: 9,
+    backgroundColor: '#DA8856',
+    marginHorizontal: 38,
+    borderRadius: 9,
+    textAlign: 'center',
   },
 });

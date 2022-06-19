@@ -6,6 +6,7 @@ import SearchIcon from './SearchIcon.png';
 import Speaker from './Speaker.png';
 import Head from './head.png';
 import SearchPrimary from './SearchPrimary.png';
+import Google from './Google.png';
 
 export {
   Book,
@@ -16,4 +17,5 @@ export {
   Speaker,
   Head,
   SearchPrimary,
+  Google,
 };

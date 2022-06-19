@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "838254083000",
+    "firebase_url": "https://project-a4632-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "project-a4632",
+    "storage_bucket": "project-a4632.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838254083000:android:e488388813ac7c2ad0ad4d",
+        "android_client_info": {
+          "package_name": "com.quran"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838254083000-mgqsul0igcjt9na1u9rp0nbrgrlfthuk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK4twWKHFR8rxLaBe5Oy0rYjJj4tz4hmA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838254083000-mgqsul0igcjt9na1u9rp0nbrgrlfthuk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -12,6 +12,8 @@ const getSize = type => {
       return 44;
     case 'H4':
       return 40;
+    case '2xl':
+      return 32;
     case 'H5':
       return 28;
     case 'H6':
