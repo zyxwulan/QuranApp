@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
   Gap,
@@ -19,10 +19,10 @@ const Detail = ({navigation, route}) => {
           type="Body 2"
           color={colors['primary-500']}
         />
-        <View style={{flex: 1}}>
-          <TextSemiBold text={arab} type="Body 1" style={{color: 'black'}} />
+        <View style={styles.fullContainer}>
+          <TextSemiBold text={arab} type="Body 1" style={styles.textBlack} />
           <Gap height={8} />
-          <TextRegular text={meaning} type="Body 2" style={{color: 'black'}} />
+          <TextRegular text={meaning} type="Body 2" style={styles.textBlack} />
         </View>
       </View>
     );
@@ -41,7 +41,7 @@ const Detail = ({navigation, route}) => {
 
   useEffect(() => {
     getAyat();
-  }, []);
+  });
 
   return (
     <>
@@ -111,5 +111,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 16,
+  },
+  textBlack: {
+    color: 'black',
+  },
+  fullContainer: {
+    flex: 1,
   },
 });

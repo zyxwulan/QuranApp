@@ -23,12 +23,12 @@ const RenderSurah = ({number, surah, city, ayat, arab, onPress}) => {
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <View style={styles.surah}>
-        <View style={{flexDirection: 'row',flex: 1}}>
+        <View style={styles.surahContainer}>
           <TextRegular
             type="Body 2"
             text={number}
             color={colors['primary-500']}
-            style={{width: '15%'}}
+            style={styles.textNumber}
           />
           <View>
             <TextRegular
@@ -36,7 +36,7 @@ const RenderSurah = ({number, surah, city, ayat, arab, onPress}) => {
               text={surah}
               color={colors['primary-500']}
             />
-            <View style={{flexDirection: 'row'}}>
+            <View style={styles.surahDetail}>
               <TextRegular
                 type="Caption"
                 text={city}
@@ -55,11 +55,11 @@ const RenderSurah = ({number, surah, city, ayat, arab, onPress}) => {
             </View>
           </View>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={styles.surahContent}>
           <TextBold text={arab} type="Body 1" color={colors['primary-500']} />
           <Gap width={18} />
           <TouchableOpacity activeOpacity={0.7}>
-            <Image source={Speaker} style={{width: 18, height: 16}} />
+            <Image source={Speaker} style={styles.speakerImage} />
           </TouchableOpacity>
         </View>
       </View>
@@ -118,7 +118,7 @@ const Surah = ({navigation}) => {
           <View style={styles.card}>
             <View>
               <View style={styles.cardTitle}>
-                <Image source={Book} style={{width: 20, height: 20}} />
+                <Image source={Book} style={styles.bookImage} />
                 <Gap width={8} />
                 <TextSemiBold
                   type="Body 2"
@@ -139,15 +139,15 @@ const Surah = ({navigation}) => {
               />
             </View>
             <View style={styles.cardImage}>
-              <Image source={Quran} style={{width: 107, height: 90}} />
+              <Image source={Quran} style={styles.quranImage} />
             </View>
           </View>
           <Gap height={24} />
 
           <View style={styles.searchBox}>
-            <TextInput placeholder="Cari" style={{width: '90%'}} />
+            <TextInput placeholder="Cari" style={styles.searhInput} />
             <TouchableOpacity activeOpacity={0.7}>
-              <Image source={SearchIcon} style={{width: 25, height: 24}} />
+              <Image source={SearchIcon} style={styles.searchIcon} />
             </TouchableOpacity>
           </View>
           <Gap height={24} />
@@ -240,5 +240,38 @@ const styles = StyleSheet.create({
     right: -1,
     bottom: -1,
     top: -1,
+  },
+  quranImage: {
+    width: 107,
+    height: 90,
+  },
+  surahContainer: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  textNumber: {
+    width: '15%',
+  },
+  surahDetail: {
+    flexDirection: 'row',
+  },
+  surahContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  speakerImage: {
+    width: 18,
+    height: 16,
+  },
+  bookImage: {
+    width: 20,
+    height: 20,
+  },
+  searchIcon: {
+    width: 25,
+    height: 24,
+  },
+  searchInput: {
+    width: '90%',
   },
 });

@@ -2,7 +2,6 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -13,6 +12,10 @@ import {TextRegular, Gap} from '../../components';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 const RenderInput = ({
   placeholder,
@@ -25,7 +28,7 @@ const RenderInput = ({
 }) => {
   return (
     <View style={styles.formInput}>
-      <TextRegular type="Body 2" text={label} style={{color: 'black'}} />
+      <TextRegular type="Body 2" text={label} style={styles.textBlack} />
       <Gap height={3} />
       <TextInput
         type={type}
@@ -40,7 +43,7 @@ const RenderInput = ({
           <TextRegular
             type="Overline"
             text={textError}
-            style={{color: 'red'}}
+            style={styles.textRed}
           />
           <Gap height={14} />
         </>
@@ -84,8 +87,6 @@ const Signup = ({navigation}) => {
         if (error.code === 'auth/invalid-email') {
           setTextErrorEmail('Email address is invalid!');
         }
-
-        console.log(error.code);
       });
   };
 
@@ -97,24 +98,66 @@ const Signup = ({navigation}) => {
     }
   };
 
+  GoogleSignin.configure({
+    webClientId:
+      '838254083000-mgqsul0igcjt9na1u9rp0nbrgrlfthuk.apps.googleusercontent.com',
+    offlineAccess: true,
+    forceCodeForRefreshToken: true,
+    scopes: [],
+  });
+
+  const signInWithGoogle = async () => {
+    try {
+      // Get the users ID token
+      const {idToken} = await GoogleSignin.signIn();
+
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // Sign-in the user with the credential
+      const user_sign_in = auth().signInWithCredential(googleCredential);
+
+      user_sign_in
+        .then(user => {
+          const data = {
+            uid: user.user.uid,
+            name: user.user.displayName,
+            email: user.user.email,
+          };
+          database()
+            .ref('/users/' + user.user.uid + '/')
+            .set(data);
+          AsyncStorage.setItem('user', JSON.stringify(data));
+          navigation.replace('Home');
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+    } catch (error) {
+      console.log(error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+
   return (
     <ScrollView>
-      <View style={{paddingVertical: 50, backgroundColor: 'white', flex: 1}}>
-        <View style={{alignSelf: 'center'}}>
-          <Image
-            source={Quran}
-            style={{width: 70, height: 70, alignSelf: 'center'}}
-          />
+      <View style={styles.page}>
+        <View style={styles.cardContainer}>
+          <Image source={Quran} style={styles.quranImage} />
           <Gap height={15} />
-          <TextRegular
-            type="2xl"
-            text="Sign Up"
-            style={{color: 'black', alignSelf: 'center'}}
-          />
+          <TextRegular type="2xl" text="Sign Up" style={styles.signupText} />
           <TextRegular
             type="Body 1"
             text="Please enter your details to sign up"
-            style={{color: 'black', alignSelf: 'center'}}
+            style={styles.subtitle}
           />
         </View>
         <Gap height={46} />
@@ -173,34 +216,29 @@ const Signup = ({navigation}) => {
             <TextRegular
               type="Body 1"
               text="Signup"
-              style={{color: 'white', alignSelf: 'center'}}
+              style={styles.signupButton}
             />
           </View>
           <Gap height={16} />
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.7}>
+        <TouchableOpacity activeOpacity={0.7} onPress={signInWithGoogle}>
           <View style={styles.buttonOutline}>
-            <Image source={Google} style={{width: 24, height: 24}} />
+            <Image source={Google} style={styles.googleImage} />
             <Gap width={8} />
             <TextRegular
               type="Body 1"
               text="Signup with Google"
-              style={{color: 'black'}}
+              style={styles.signupText}
             />
           </View>
         </TouchableOpacity>
 
-        <View
-          style={{flexDirection: 'row', alignSelf: 'center', marginTop: 30}}>
+        <View style={styles.question}>
           <TextRegular type="Caption" text="Already have an account? " />
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => navigation.navigate('Login')}>
-            <TextRegular
-              type="Caption"
-              text="Login"
-              style={{color: '#1976D2'}}
-            />
+            <TextRegular type="Caption" text="Login" style={styles.loginText} />
           </TouchableOpacity>
         </View>
       </View>
@@ -211,6 +249,11 @@ const Signup = ({navigation}) => {
 export default Signup;
 
 const styles = StyleSheet.create({
+  page: {
+    paddingVertical: 50,
+    backgroundColor: 'white',
+    flex: 1,
+  },
   formInput: {
     paddingHorizontal: 38,
   },
@@ -238,5 +281,43 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  cardContainer: {
+    alignSelf: 'center',
+  },
+  quranImage: {
+    width: 70,
+    height: 70,
+    alignSelf: 'center',
+  },
+  signupText: {
+    color: 'black',
+    alignSelf: 'center',
+  },
+  subtitle: {
+    color: 'black',
+    alignSelf: 'center',
+  },
+  signupButton: {
+    color: 'white',
+    alignSelf: 'center',
+  },
+  googleImage: {
+    width: 24,
+    height: 24,
+  },
+  question: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginTop: 30,
+  },
+  loginText: {
+    color: '#1976D2',
+  },
+  textBlack: {
+    color: 'black',
+  },
+  textRed: {
+    color: 'red',
   },
 });

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "838254083000-ic9rti1tbo4ufn5ncjsk8410cbr66tco.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quran",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "838254083000-mgqsul0igcjt9na1u9rp0nbrgrlfthuk.apps.googleusercontent.com",
           "client_type": 3
         }
